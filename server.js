@@ -1,8 +1,10 @@
 var path = require('path');
 var express = require('express');
 var fileUpload = require('express-fileupload');
-var app = express();
 
+var dataPath = process.env.PERSISTENT_DATA_DIR || '/tmp';
+
+var app = express();
 app.use(fileUpload());
 
 app.get('/', function(req, res) {
@@ -17,7 +19,7 @@ app.post('/upload', function(req, res) {
     return;
   }
 
-  req.files.newFile.mv(path.join('/data', req.files.newFile.name), function(err) {
+  req.files.newFile.mv(path.join(dataPath, req.files.newFile.name), function(err) {
     if (err) {
       res.status(500).send(err);
     }
